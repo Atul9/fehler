@@ -6,12 +6,18 @@ use std::fmt::{self, Display};
 use std::io;
 
 macro_rules! null_display {
-    ($t:ty) => { impl Display for $t {
-        fn fmt(&self, _: &mut fmt::Formatter) -> fmt::Result { Ok(()) }
-    } };
+    ($t:ty) => {
+        impl Display for $t {
+            fn fmt(&self, _: &mut fmt::Formatter) -> fmt::Result {
+                Ok(())
+            }
+        }
+    };
 }
 
-fn is_error<T: Error>(t: T) -> T { t }
+fn is_error<T: Error>(t: T) -> T {
+    t
+}
 
 #[derive(fehler::Error, Debug)]
 struct UnitError;
@@ -45,7 +51,9 @@ null_display!(BacktraceError);
 
 #[test]
 fn backtrace_error() {
-    let e = is_error(BacktraceError { b: Backtrace::capture() });
+    let e = is_error(BacktraceError {
+        b: Backtrace::capture(),
+    });
     assert!(e.backtrace().is_some());
     assert!(e.source().is_none());
 }
@@ -59,7 +67,9 @@ null_display!(SourceError);
 
 #[test]
 fn source_error() {
-    let e = is_error(SourceError { e: io::Error::last_os_error() });
+    let e = is_error(SourceError {
+        e: io::Error::last_os_error(),
+    });
     assert!(e.backtrace().is_none());
     assert!(e.source().is_some());
 }

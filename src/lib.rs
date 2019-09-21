@@ -1,8 +1,8 @@
 #![feature(backtrace)]
 
 mod as_error;
-mod exception;
 mod context;
+mod exception;
 
 #[doc(inline)]
 /// Annotations a function that "throws" a Result.
@@ -24,15 +24,17 @@ pub use fehler_macros::throws;
 pub use fehler_macros::Error;
 
 pub use crate::as_error::AsError;
-pub use crate::exception::{Exception, Errors};
 pub use crate::context::Context;
+pub use crate::exception::{Errors, Exception};
 
 /// Throw an error.
 ///
 /// This macro is equivalent to `Err($err)?`.
 #[macro_export]
 macro_rules! throw {
-    ($err:expr)   => (return std::result::Result::Err(std::convert::From::from($err)))
+    ($err:expr) => {
+        return std::result::Result::Err(std::convert::From::from($err));
+    };
 }
 
 /// Construct an ad-hoc exception from a string.

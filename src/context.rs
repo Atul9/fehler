@@ -1,6 +1,6 @@
 use std::backtrace::Backtrace;
-use std::fmt::{self, Debug, Display};
 use std::error::Error;
+use std::fmt::{self, Debug, Display};
 
 use crate::Exception;
 
